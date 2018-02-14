@@ -1,0 +1,66 @@
+policy_module(grafanad, 1.0.0)
+
+########################################
+#
+# Declarations
+#
+#permissive grafanad_t;
+
+type grafanad_t;
+type grafanad_exec_t;
+init_daemon_domain(grafanad_t, grafanad_exec_t)
+
+type grafanad_unit_file_t;
+systemd_unit_file(grafanad_unit_file_t)
+
+type grafanad_conf_t;
+files_config_file(grafanad_conf_t)
+
+type grafanad_var_run_t;
+files_pid_file(grafanad_var_run_t)
+
+type grafanad_var_lib_t;
+files_type(grafanad_var_lib_t)
+
+type grafanad_log_t;
+logging_log_file(grafanad_log_t)
+
+type grafanad_port_t;
+corenet_port(grafanad_port_t)
+
+########################################
+#
+# grafanad local policy
+#
+allow grafanad_t self:tcp_socket { create_stream_socket_perms };
+allow grafanad_t self:udp_socket { create_stream_socket_perms };
+#allow grafanad_t self:udp_socket { connect create getattr setopt write };
+
+allow grafanad_t grafanad_port_t:tcp_socket name_bind;
+
+manage_dirs_pattern(grafanad_t, grafanad_conf_t, grafanad_conf_t)
+manage_files_pattern(grafanad_t, grafanad_conf_t, grafanad_conf_t)
+
+manage_dirs_pattern(grafanad_t, grafanad_var_run_t, grafanad_var_run_t)
+manage_files_pattern(grafanad_t, grafanad_var_run_t, grafanad_var_run_t)
+files_pid_filetrans(grafanad_t, grafanad_var_run_t, { dir file })
+
+manage_dirs_pattern(grafanad_t, grafanad_var_lib_t, grafanad_var_lib_t)
+manage_files_pattern(grafanad_t, grafanad_var_lib_t, grafanad_var_lib_t)
+files_var_lib_filetrans(grafanad_t, grafanad_var_lib_t, { dir file })
+
+manage_dirs_pattern(grafanad_t, grafanad_log_t, grafanad_log_t)
+manage_files_pattern(grafanad_t, grafanad_log_t, grafanad_log_t)
+logging_log_filetrans(grafanad_t, grafanad_log_t, { dir file })
+
+corenet_tcp_bind_generic_node(grafanad_t)
+corenet_tcp_connect_http_port(grafanad_t)
+
+kernel_read_net_sysctls(grafanad_t)
+kernel_read_system_state(grafanad_t)
+
+sysnet_read_config(grafanad_t)
+
+miscfiles_read_generic_certs(grafanad_t)
+
+
