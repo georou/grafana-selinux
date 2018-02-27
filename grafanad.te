@@ -6,6 +6,10 @@ policy_module(grafanad, 1.0.0)
 #
 #permissive grafanad_t;
 
+gen_require(`
+	type httpd_t;
+')
+
 type grafanad_t;
 type grafanad_exec_t;
 init_daemon_domain(grafanad_t, grafanad_exec_t)
@@ -34,7 +38,6 @@ corenet_port(grafanad_port_t)
 #
 allow grafanad_t self:tcp_socket { create_stream_socket_perms };
 allow grafanad_t self:udp_socket { create_stream_socket_perms };
-#allow grafanad_t self:udp_socket { connect create getattr setopt write };
 
 allow grafanad_t grafanad_port_t:tcp_socket name_bind;
 
@@ -55,6 +58,9 @@ logging_log_filetrans(grafanad_t, grafanad_log_t, { dir file })
 
 corenet_tcp_bind_generic_node(grafanad_t)
 corenet_tcp_connect_http_port(grafanad_t)
+corenet_tcp_connect_websm_port(grafanad_t)
+
+connect_grafana_port(httpd_t) # Reverse proxy support
 
 kernel_read_net_sysctls(grafanad_t)
 kernel_read_system_state(grafanad_t)
@@ -62,5 +68,4 @@ kernel_read_system_state(grafanad_t)
 sysnet_read_config(grafanad_t)
 
 miscfiles_read_generic_certs(grafanad_t)
-
 

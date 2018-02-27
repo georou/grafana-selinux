@@ -19,6 +19,20 @@ interface(`grafanad_domtrans',`
 	domtrans_pattern($1, grafanad_exec_t, grafanad_t)
 ')
 
+########################################
+## <summary>
+##      Allow domain to name_connect to grafana port. Default :3000
+## </summary>
+## <param name="domain">
+## <summary>
+##      Domain allowed access
+## </summary>
+## </param>
+#
+interface(`connect_grafana_port',`
+	allow $1 grafanad_port_t:tcp_socket name_connect;
+')
+
 ######################################
 ## <summary>
 ##	Execute grafanad in the caller domain.
