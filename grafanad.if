@@ -30,6 +30,11 @@ interface(`grafanad_domtrans',`
 ## </param>
 #
 interface(`connect_grafana_port',`
+        gen_require(`
+		class tcp_socket name_connect;
+                type grafanad_port_t;
+        ')
+
 	allow $1 grafanad_port_t:tcp_socket name_connect;
 ')
 
