@@ -20,6 +20,9 @@ systemd_unit_file(grafanad_unit_file_t)
 type grafanad_conf_t;
 files_config_file(grafanad_conf_t)
 
+type grafanad_db_t;
+files_config_file(grafanad_db_t)
+
 type grafanad_var_run_t;
 files_pid_file(grafanad_var_run_t)
 
@@ -43,6 +46,9 @@ allow grafanad_t grafanad_port_t:tcp_socket name_bind;
 
 manage_dirs_pattern(grafanad_t, grafanad_conf_t, grafanad_conf_t)
 manage_files_pattern(grafanad_t, grafanad_conf_t, grafanad_conf_t)
+
+manage_dirs_pattern(grafanad_t, grafanad_db_t, grafanad_db_t)
+manage_files_pattern(grafanad_t, grafanad_db_t, grafanad_db_t)
 
 manage_dirs_pattern(grafanad_t, grafanad_var_run_t, grafanad_var_run_t)
 manage_files_pattern(grafanad_t, grafanad_var_run_t, grafanad_var_run_t)

@@ -8,6 +8,7 @@
 /var/run/grafana-server.pid				--	gen_context(system_u:object_r:grafanad_var_run_t,s0)
 
 /var/lib/grafana(/.*)?						gen_context(system_u:object_r:grafanad_var_lib_t,s0)
+#/var/lib/grafana/grafana.db				--	gen_context(system_u:object_r:grafanad_db_t,s0)
 
 /var/log/grafana(/.*)?						gen_context(system_u:object_r:grafanad_log_t,s0)
 

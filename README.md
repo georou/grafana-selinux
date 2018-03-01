@@ -19,6 +19,9 @@ The policy assumes that you used the rpm from Grafana to install it. Thus all th
 # Clone the repo
 git clone https://github.com/georou/grafana-selinux.git
 
+# Copy relevant .if interface file to /usr/share/selinux/devel/include to expose them when building and for future modules
+install -Dp -m 0664 -o root -g root grafanad.if /usr/share/selinux/devel/include/myapplications/grafanad.if
+
 # Compile the selinux module (see below)
 
 # Install the SELinux policy module. Compile it before hand to ensure proper compatibility (see below)

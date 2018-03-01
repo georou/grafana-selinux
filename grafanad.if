@@ -38,6 +38,26 @@ interface(`connect_grafana_port',`
 	allow $1 grafanad_port_t:tcp_socket name_connect;
 ')
 
+#######################################
+## <summary>
+##	Read grafana database.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`grafana_read_db',`
+	gen_require(`
+		type grafanad_db_t;
+	')
+
+	files_search_var_lib($1)
+	search_dirs_pattern($1, grafanad_var_lib_t, grafanad_var_lib_t)	
+	read_files_pattern($1, grafanad_db_t, grafanad_db_t)
+')
+
 ######################################
 ## <summary>
 ##	Execute grafanad in the caller domain.
@@ -100,16 +120,16 @@ interface(`grafanad_systemctl',`
 #
 interface(`grafanad_admin',`
 	gen_require(`
-		type grafanad_t;
+	type grafanad_t;
 	type grafanad_unit_file_t;
 	')
 
 	allow $1 grafanad_t:process { signal_perms };
 	ps_process_pattern($1, grafanad_t)
 
-    tunable_policy(`deny_ptrace',`',`
-        allow $1 grafanad_t:process ptrace;
-    ')
+	tunable_policy(`deny_ptrace',`',`
+        	allow $1 grafanad_t:process ptrace;
+    	')
 
 	grafanad_systemctl($1)
 	admin_pattern($1, grafanad_unit_file_t)
