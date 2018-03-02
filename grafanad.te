@@ -39,8 +39,9 @@ corenet_port(grafanad_port_t)
 #
 # grafanad local policy
 #
-allow grafanad_t self:tcp_socket { create_stream_socket_perms };
-allow grafanad_t self:udp_socket { create_stream_socket_perms };
+allow grafanad_t self:unix_dgram_socket create_socket_perms;
+allow grafanad_t self:tcp_socket create_stream_socket_perms;
+allow grafanad_t self:udp_socket create_stream_socket_perms;
 
 allow grafanad_t grafanad_port_t:tcp_socket name_bind;
 
@@ -68,6 +69,7 @@ corenet_tcp_connect_websm_port(grafanad_t)
 
 connect_grafana_port(httpd_t) # Reverse proxy support
 
+kernel_dgram_send(grafanad_t)
 kernel_read_net_sysctls(grafanad_t)
 kernel_read_system_state(grafanad_t)
 
