@@ -1,4 +1,4 @@
-policy_module(grafanad, 1.0.0)
+policy_module(grafanad, 1.0.1)
 
 ########################################
 #
@@ -6,9 +6,13 @@ policy_module(grafanad, 1.0.0)
 #
 #permissive grafanad_t;
 
-gen_require(`
-	type httpd_t;
-')
+## <desc>
+## <p>
+## Allow grafana to be used with a reverse proxy
+## </p>
+## </desc>
+gen_tunable(grafana_can_reverse_proxy, false)
+
 
 type grafanad_t;
 type grafanad_exec_t;
@@ -39,11 +43,13 @@ corenet_port(grafanad_port_t)
 #
 # grafanad local policy
 #
-allow grafanad_t self:unix_dgram_socket create_socket_perms;
+allow grafanad_t self:process setrlimit;
+allow grafanad_t self:netlink_route_socket create_netlink_socket_perms;
 allow grafanad_t self:tcp_socket create_stream_socket_perms;
 allow grafanad_t self:udp_socket create_stream_socket_perms;
+allow grafanad_t self:unix_dgram_socket create_socket_perms;
 
-allow grafanad_t grafanad_port_t:tcp_socket name_bind;
+allow grafanad_t grafanad_port_t:tcp_socket { name_bind name_connect };
 
 manage_dirs_pattern(grafanad_t, grafanad_conf_t, grafanad_conf_t)
 manage_files_pattern(grafanad_t, grafanad_conf_t, grafanad_conf_t)
@@ -64,10 +70,6 @@ manage_files_pattern(grafanad_t, grafanad_log_t, grafanad_log_t)
 logging_log_filetrans(grafanad_t, grafanad_log_t, { dir file })
 
 corenet_tcp_bind_generic_node(grafanad_t)
-corenet_tcp_connect_http_port(grafanad_t)
-corenet_tcp_connect_websm_port(grafanad_t)
-
-connect_grafana_port(httpd_t) # Reverse proxy support
 
 kernel_dgram_send(grafanad_t)
 kernel_read_net_sysctls(grafanad_t)
@@ -75,5 +77,15 @@ kernel_read_system_state(grafanad_t)
 
 sysnet_read_config(grafanad_t)
 
+logging_send_syslog_msg(grafanad_t)
+
 miscfiles_read_generic_certs(grafanad_t)
 
+tunable_policy(`grafana_can_reverse_proxy',`
+	gen_require(`
+		type httpd_t;
+	')
+
+	connect_grafana_port(httpd_t) # Reverse proxy support
+	corenet_tcp_connect_http_port(grafanad_t)
+')
