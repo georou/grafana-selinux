@@ -43,8 +43,6 @@ corenet_port(grafanad_port_t)
 #
 # grafanad local policy
 #
-allow grafanad_t self:process setrlimit;
-allow grafanad_t self:netlink_route_socket create_netlink_socket_perms;
 allow grafanad_t self:tcp_socket create_stream_socket_perms;
 allow grafanad_t self:udp_socket create_stream_socket_perms;
 allow grafanad_t self:unix_dgram_socket create_socket_perms;

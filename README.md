@@ -32,7 +32,6 @@ semanage port -a -t grafanad_port_t -p tcp 3000
 
 # Restore all the correct context labels
 restorecon -RvF /usr/sbin/grafana-* \
-		/usr/share/grafana/tools \
 		/etc/grafana \
 		/var/log/grafana \
 		/var/lib/grafana
