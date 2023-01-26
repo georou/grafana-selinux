@@ -1,4 +1,4 @@
-policy_module(grafanad, 1.0.1)
+policy_module(grafanad, 1.0.2)
 
 ########################################
 #
@@ -73,6 +73,8 @@ corenet_tcp_bind_generic_node(grafanad_t)
 kernel_dgram_send(grafanad_t)
 kernel_read_net_sysctls(grafanad_t)
 kernel_read_system_state(grafanad_t)
+
+auth_read_passwd(grafanad_t)
 
 sysnet_read_config(grafanad_t)
 
