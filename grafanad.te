@@ -17,6 +17,7 @@ gen_tunable(grafana_can_reverse_proxy, false)
 type grafanad_t;
 type grafanad_exec_t;
 init_daemon_domain(grafanad_t, grafanad_exec_t)
+init_nnp_daemon_domain(grafanad_t)
 
 type grafanad_unit_file_t;
 systemd_unit_file(grafanad_unit_file_t)
