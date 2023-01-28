@@ -1,4 +1,4 @@
-policy_module(grafanad, 1.0.2)
+policy_module(grafanad, 1.0.3)
 
 ########################################
 #
@@ -12,6 +12,48 @@ policy_module(grafanad, 1.0.2)
 ## </p>
 ## </desc>
 gen_tunable(grafana_can_reverse_proxy, false)
+
+## <desc>
+## <p>
+## Allow grafana to connect to alertmanager's default tcp port of 9093
+## </p>
+## </desc>
+gen_tunable(grafana_can_tcp_connect_alertmanager_port, false)
+
+## <desc>
+## <p>
+## Allow grafana to connect to elasticsearch's default tcp port of 9200
+## </p>
+## </desc>
+gen_tunable(grafana_can_tcp_connect_elasticsearch_port, false)
+
+## <desc>
+## <p>
+## Allow grafana to connect to influxdb's default tcp port of 8086
+## </p>
+## </desc>
+gen_tunable(grafana_can_tcp_connect_influxdb_port, false)
+
+## <desc>
+## <p>
+## Allow grafana to connect to mysql's default tcp port of 3306
+## </p>
+## </desc>
+gen_tunable(grafana_can_tcp_connect_mysql_port, false)
+
+## <desc>
+## <p>
+## Allow grafana to connect to postgresql's default tcp port of 5432
+## </p>
+## </desc>
+gen_tunable(grafana_can_tcp_connect_postgressql_port, false)
+
+## <desc>
+## <p>
+## Allow grafana to connect to prometheus' default tcp port of 9090
+## </p>
+## </desc>
+gen_tunable(grafana_can_tcp_connect_prometheus_port, false)
 
 
 type grafanad_t;
@@ -89,4 +131,40 @@ tunable_policy(`grafana_can_reverse_proxy',`
 
 	connect_grafana_port(httpd_t) # Reverse proxy support
 	corenet_tcp_connect_http_port(grafanad_t)
+')
+
+optional_policy(`
+	tunable_policy(`grafana_can_tcp_connect_alertmanager_port',` # Alertmanager default tcp port 9093
+		connect_alertmanager_prometheusd_port(grafanad_t)
+	')
+')
+
+optional_policy(`
+	tunable_policy(`grafana_can_tcp_connect_elasticsearch_port',` # Elasticsearch default tcp port 9200
+		corenet_tcp_connect_wap_wsp_port(grafanad_t)
+	')
+')
+
+optional_policy(`
+	tunable_policy(`grafana_can_tcp_connect_influxdb_port',` # Influx DB default tcp port 8086
+		# No policy yet created for InfluxDB
+	')
+')
+
+optional_policy(`
+	tunable_policy(`grafana_can_tcp_connect_mysql_port',` # Mysql default tcp port 3306
+		corenet_tcp_connect_mysqld_port(grafanad_t)
+	')
+')
+
+optional_policy(`
+	tunable_policy(`grafana_can_tcp_connect_postgressql_port',` # PostgresSQL default tcp port 5432
+		corenet_tcp_connect_postgresql_port(grafanad_t)
+	')
+')
+
+optional_policy(`
+	tunable_policy(`grafana_can_tcp_connect_prometheus_port',` # Prometheus default tcp port 9090
+		corenet_tcp_connect_websm_port(grafanad_t)
+	')
 ')
