@@ -11,7 +11,7 @@ policy_module(grafanad, 1.0.3)
 ## Allow grafana to be used with a reverse proxy
 ## </p>
 ## </desc>
-gen_tunable(grafana_can_reverse_proxy, false)
+gen_tunable(grafana_can_reverse_proxy, true)
 
 ## <desc>
 ## <p>
@@ -133,11 +133,11 @@ tunable_policy(`grafana_can_reverse_proxy',`
 	corenet_tcp_connect_http_port(grafanad_t)
 ')
 
-optional_policy(`
-	tunable_policy(`grafana_can_tcp_connect_alertmanager_port',` # Alertmanager default tcp port 9093
-		connect_alertmanager_prometheusd_port(grafanad_t)
-	')
-')
+#optional_policy(`
+#	tunable_policy(`grafana_can_tcp_connect_alertmanager_port',` # Alertmanager default tcp port 9093
+#		connect_alertmanager_prometheusd_port(grafanad_t)
+#	')
+#')
 
 optional_policy(`
 	tunable_policy(`grafana_can_tcp_connect_elasticsearch_port',` # Elasticsearch default tcp port 9200
