@@ -17,9 +17,10 @@ The policy assumes that you used the rpm from Grafana to install it. Thus all th
 ## Installation
 ```sh
 # Clone the repo
-git clone https://github.com/sfeifer/grafana-selinux.git
+git clone https://github.com/georou/grafana-selinux.git
 
-# Copy relevant .if interface file to /usr/share/selinux/devel/include to expose them when building and for future modules. May need to use full path for grafana.if if not working.
+# Copy relevant .if interface file to /usr/share/selinux/devel/include to expose them when building and for future modules.
+# May need to use full path for grafana.if if not working.
 install -Dp -m 0664 -o root -g root grafana.if /usr/share/selinux/devel/include/myapplications/grafana.if
 
 # Compile the selinux module (see below)
