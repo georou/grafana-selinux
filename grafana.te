@@ -11,7 +11,7 @@ policy_module(grafana, 1.0.3)
 ## Allow grafana to be used with a reverse proxy
 ## </p>
 ## </desc>
-gen_tunable(grafana_can_reverse_proxy, true)
+gen_tunable(grafana_can_reverse_proxy, false)
 
 ## <desc>
 ## <p>
@@ -86,28 +86,6 @@ corenet_port(grafana_port_t)
 #
 # grafana local policy
 #
-
-require {
-	type tmp_t;
-	type init_t;
-	type grafana_t;
-	type grafana_var_lib_t;
-	class lnk_file { getattr read };
-	class sock_file { create write };
-	class unix_stream_socket connectto;
-}
-
-allow grafana_t grafana_var_lib_t:lnk_file { getattr read };
-allow grafana_t self:unix_stream_socket connectto;
-allow grafana_t tmp_t:sock_file { create write };
-dev_read_sysfs(grafana_t)
-files_exec_usr_files(grafana_t)
-files_manage_generic_tmp_files(grafana_t)
-insights_client_filetrans_tmp(grafana_t)
-kernel_rw_unlabeled_files(grafana_t)
-kernel_signull_unlabeled(init_t)
-files_delete_isid_type_files(init_t)
-corenet_tcp_connect_generic_port(grafana_t)
 
 allow grafana_t self:tcp_socket create_stream_socket_perms;
 allow grafana_t self:udp_socket create_stream_socket_perms;
