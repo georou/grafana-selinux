@@ -56,8 +56,6 @@ gen_tunable(grafana_can_tcp_connect_postgressql_port, false)
 gen_tunable(grafana_can_tcp_connect_prometheus_port, false)
 
 
-
-
 type grafana_t;
 type grafana_exec_t;
 init_daemon_domain(grafana_t, grafana_exec_t)
@@ -89,7 +87,6 @@ corenet_port(grafana_port_t)
 # grafana local policy
 #
 
-#start what I added
 require {
 	type tmp_t;
 	type init_t;
@@ -111,7 +108,6 @@ kernel_rw_unlabeled_files(grafana_t)
 kernel_signull_unlabeled(init_t)
 files_delete_isid_type_files(init_t)
 corenet_tcp_connect_generic_port(grafana_t)
-#end what I added
 
 allow grafana_t self:tcp_socket create_stream_socket_perms;
 allow grafana_t self:udp_socket create_stream_socket_perms;
