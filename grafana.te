@@ -156,6 +156,7 @@ tunable_policy(`grafana_can_reverse_proxy',`
 	corenet_tcp_connect_http_port(grafana_t)
 ')
 
+# This optional policy causes an error when running make
 #optional_policy(`
 #	tunable_policy(`grafana_can_tcp_connect_alertmanager_port',` # Alertmanager default tcp port 9093
 #		connect_alertmanager_prometheusd_port(grafana_t)
