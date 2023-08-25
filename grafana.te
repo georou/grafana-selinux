@@ -115,20 +115,14 @@ tunable_policy(`grafana_can_reverse_proxy',`
 	corenet_tcp_connect_http_port(grafana_t)
 ')
 
-optional_policy(`
-	tunable_policy(`grafana_can_tcp_connect_elasticsearch_port',` # Elasticsearch default tcp port 9200
-		corenet_tcp_connect_wap_wsp_port(grafana_t)
-	')
+tunable_policy(`grafana_can_tcp_connect_elasticsearch_port',` # Elasticsearch default tcp port 9200
+	corenet_tcp_connect_wap_wsp_port(grafana_t)
 ')
 
-optional_policy(`
-	tunable_policy(`grafana_can_tcp_connect_mysql_port',` # Mysql default tcp port 3306
-		corenet_tcp_connect_mysqld_port(grafana_t)
-	')
+tunable_policy(`grafana_can_tcp_connect_mysql_port',` # Mysql default tcp port 3306
+	corenet_tcp_connect_mysqld_port(grafana_t)
 ')
 
-optional_policy(`
-	tunable_policy(`grafana_can_tcp_connect_prometheus_port',` # Prometheus default tcp port 9090
-		corenet_tcp_connect_websm_port(grafana_t)
-	')
+tunable_policy(`grafana_can_tcp_connect_prometheus_port',` # Prometheus default tcp port 9090
+	corenet_tcp_connect_websm_port(grafana_t)
 ')
