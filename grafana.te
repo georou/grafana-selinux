@@ -1,4 +1,4 @@
-policy_module(grafana, 1.0.3)
+policy_module(grafana, 1.0.4)
 
 ########################################
 #
