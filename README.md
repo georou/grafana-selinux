@@ -11,7 +11,7 @@ The policy assumes that you used the rpm from Grafana to install it. Thus all th
 * Anything outside the scope of using it at the most basic level - keep an eye on that AVC log!
 
 ### Future considerations:
-* Add a grafanad_plugin_t label to contain plugins.
+* Add a grafana_plugin_t label to contain plugins.
 
 
 ## Installation
@@ -19,16 +19,17 @@ The policy assumes that you used the rpm from Grafana to install it. Thus all th
 # Clone the repo
 git clone https://github.com/georou/grafana-selinux.git
 
-# Copy relevant .if interface file to /usr/share/selinux/devel/include to expose them when building and for future modules
-install -Dp -m 0664 -o root -g root grafanad.if /usr/share/selinux/devel/include/myapplications/grafanad.if
+# Copy relevant .if interface file to /usr/share/selinux/devel/include to expose them when building and for future modules.
+# May need to use full path for grafana.if if not working.
+install -Dp -m 0664 -o root -g root grafana.if /usr/share/selinux/devel/include/myapplications/grafana.if
 
 # Compile the selinux module (see below)
 
 # Install the SELinux policy module. Compile it before hand to ensure proper compatibility (see below)
-semodule -i grafanad.pp
+semodule -i grafana.pp
 
 # Add grafana ports
-semanage port -a -t grafanad_port_t -p tcp 3000
+semanage port -a -t grafana_port_t -p tcp 3000
 
 # Restore all the correct context labels
 restorecon -RvF /usr/sbin/grafana-* \
@@ -36,7 +37,7 @@ restorecon -RvF /usr/sbin/grafana-* \
 		/var/log/grafana \
 		/var/lib/grafana
 
-# Start grafanad
+# Start grafana
 systemctl start grafana-server.service
 
 # Ensure it's working in the proper confinement
@@ -50,13 +51,13 @@ Ensure you have the `selinux-policy-devel` package installed.
 yum install selinux-policy-devel setools-console
 # Change to the directory containing the .if, .fc & .te files
 cd grafana-selinux
-make -f /usr/share/selinux/devel/Makefile grafanad.pp
-semodule -i grafanad.pp
+make -f /usr/share/selinux/devel/Makefile grafana.pp
+semodule -i grafana.pp
 ```
 
 ## Debugging and Troubleshooting
 
-* If you're getting permission errors, uncomment permissive in the .te file and try again. Re-check logs for any issues. Or `semanage permissive -a grafanad_t`
+* If you're getting permission errors, uncomment permissive in the .te file and try again. Re-check logs for any issues. Or `semanage permissive -a grafana_t`
 * Easy way to add in allow rules is the below command, then copy or redirect into the .te module. Rebuild and re-install:
 * Don't forget to actually look at what is suggested. audit2allow will most likely go for a coarse grained permission!
 

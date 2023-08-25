@@ -1,8 +1,8 @@
-## <summary>policy for grafanad</summary>
+## <summary>policy for grafana</summary>
 
 ########################################
 ## <summary>
-##	Execute grafanad_exec_t in the grafanad domain.
+##	Execute grafana_exec_t in the grafana domain.
 ## </summary>
 ## <param name="domain">
 ## <summary>
@@ -10,13 +10,13 @@
 ## </summary>
 ## </param>
 #
-interface(`grafanad_domtrans',`
+interface(`grafana_domtrans',`
 	gen_require(`
-		type grafanad_t, grafanad_exec_t;
+		type grafana_t, grafana_exec_t;
 	')
 
 	corecmd_search_bin($1)
-	domtrans_pattern($1, grafanad_exec_t, grafanad_t)
+	domtrans_pattern($1, grafana_exec_t, grafana_t)
 ')
 
 ########################################
@@ -32,10 +32,10 @@ interface(`grafanad_domtrans',`
 interface(`connect_grafana_port',`
         gen_require(`
 		class tcp_socket name_connect;
-                type grafanad_port_t;
+                type grafana_port_t;
         ')
 
-	allow $1 grafanad_port_t:tcp_socket name_connect;
+	allow $1 grafana_port_t:tcp_socket name_connect;
 ')
 
 #######################################
@@ -50,17 +50,17 @@ interface(`connect_grafana_port',`
 #
 interface(`grafana_read_db',`
 	gen_require(`
-		type grafanad_db_t;
+		type grafana_db_t;
 	')
 
 	files_search_var_lib($1)
-	search_dirs_pattern($1, grafanad_var_lib_t, grafanad_var_lib_t)	
-	read_files_pattern($1, grafanad_db_t, grafanad_db_t)
+	search_dirs_pattern($1, grafana_var_lib_t, grafana_var_lib_t)	
+	read_files_pattern($1, grafana_db_t, grafana_db_t)
 ')
 
 ######################################
 ## <summary>
-##	Execute grafanad in the caller domain.
+##	Execute grafana in the caller domain.
 ## </summary>
 ## <param name="domain">
 ##	<summary>
@@ -68,17 +68,17 @@ interface(`grafana_read_db',`
 ##	</summary>
 ## </param>
 #
-interface(`grafanad_exec',`
+interface(`grafana_exec',`
 	gen_require(`
-		type grafanad_exec_t;
+		type grafana_exec_t;
 	')
 
 	corecmd_search_bin($1)
-	can_exec($1, grafanad_exec_t)
+	can_exec($1, grafana_exec_t)
 ')
 ########################################
 ## <summary>
-##	Execute grafanad server in the grafanad domain.
+##	Execute grafana server in the grafana domain.
 ## </summary>
 ## <param name="domain">
 ##	<summary>
@@ -86,25 +86,25 @@ interface(`grafanad_exec',`
 ##	</summary>
 ## </param>
 #
-interface(`grafanad_systemctl',`
+interface(`grafana_systemctl',`
 	gen_require(`
-		type grafanad_t;
-		type grafanad_unit_file_t;
+		type grafana_t;
+		type grafana_unit_file_t;
 	')
 
 	systemd_exec_systemctl($1)
         systemd_read_fifo_file_passwd_run($1)
-	allow $1 grafanad_unit_file_t:file read_file_perms;
-	allow $1 grafanad_unit_file_t:service manage_service_perms;
+	allow $1 grafana_unit_file_t:file read_file_perms;
+	allow $1 grafana_unit_file_t:service manage_service_perms;
 
-	ps_process_pattern($1, grafanad_t)
+	ps_process_pattern($1, grafana_t)
 ')
 
 
 ########################################
 ## <summary>
 ##	All of the rules required to administrate
-##	an grafanad environment
+##	an grafana environment
 ## </summary>
 ## <param name="domain">
 ##	<summary>
@@ -118,22 +118,22 @@ interface(`grafanad_systemctl',`
 ## </param>
 ## <rolecap/>
 #
-interface(`grafanad_admin',`
+interface(`grafana_admin',`
 	gen_require(`
-	type grafanad_t;
-	type grafanad_unit_file_t;
+	type grafana_t;
+	type grafana_unit_file_t;
 	')
 
-	allow $1 grafanad_t:process { signal_perms };
-	ps_process_pattern($1, grafanad_t)
+	allow $1 grafana_t:process { signal_perms };
+	ps_process_pattern($1, grafana_t)
 
 	tunable_policy(`deny_ptrace',`',`
-        	allow $1 grafanad_t:process ptrace;
+        	allow $1 grafana_t:process ptrace;
     	')
 
-	grafanad_systemctl($1)
-	admin_pattern($1, grafanad_unit_file_t)
-	allow $1 grafanad_unit_file_t:service all_service_perms;
+	grafana_systemctl($1)
+	admin_pattern($1, grafana_unit_file_t)
+	allow $1 grafana_unit_file_t:service all_service_perms;
 	optional_policy(`
 		systemd_passwd_agent_exec($1)
 		systemd_read_fifo_file_passwd_run($1)

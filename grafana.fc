@@ -1,0 +1,16 @@
+/etc/systemd/system/grafana-server.service		--	gen_context(system_u:object_r:grafana_unit_file_t,s0)
+/usr/lib/systemd/system/grafana-server.service		--	gen_context(system_u:object_r:grafana_unit_file_t,s0)
+
+/etc/grafana(/.*)?						gen_context(system_u:object_r:grafana_conf_t,s0)
+
+/usr/sbin/grafana-cli					--	gen_context(system_u:object_r:grafana_exec_t,s0)
+/usr/sbin/grafana-server				--	gen_context(system_u:object_r:grafana_exec_t,s0)
+
+/var/lib/grafana(/.*)?						gen_context(system_u:object_r:grafana_var_lib_t,s0)
+#/var/lib/grafana/grafana.db				--	gen_context(system_u:object_r:grafana_db_t,s0)
+
+/var/log/grafana(/.*)?						gen_context(system_u:object_r:grafana_log_t,s0)
+
+/var/run/grafana-server.pid				--	gen_context(system_u:object_r:grafana_var_run_t,s0)
+
+#/var/lib/grafana/plugins(/.*)?					gen_context(system_u:object_r:grafana_plugin_t,s0)
