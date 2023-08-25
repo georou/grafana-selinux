@@ -89,6 +89,7 @@ manage_dirs_pattern(grafana_t, grafana_log_t, grafana_log_t)
 manage_files_pattern(grafana_t, grafana_log_t, grafana_log_t)
 logging_log_filetrans(grafana_t, grafana_log_t, { dir file })
 
+corenet_tcp_connect_http_port(grafana_t)
 corenet_tcp_bind_generic_node(grafana_t)
 
 kernel_dgram_send(grafana_t)
@@ -96,6 +97,8 @@ kernel_read_net_sysctls(grafana_t)
 kernel_read_system_state(grafana_t)
 
 auth_read_passwd(grafana_t)
+
+dev_read_sysfs(grafana_t)
 
 sysnet_read_config(grafana_t)
 
