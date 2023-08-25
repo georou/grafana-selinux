@@ -14,3 +14,7 @@
 /var/run/grafana-server.pid				--	gen_context(system_u:object_r:grafana_var_run_t,s0)
 
 #/var/lib/grafana/plugins(/.*)?					gen_context(system_u:object_r:grafana_plugin_t,s0)
+
+/usr/share/grafana/bin/grafana				--	gen_context(system_u:object_r:grafana_exec_t,s0)
+/usr/share/grafana/bin/grafana-cli			--	gen_context(system_u:object_r:grafana_exec_t,s0)
+/usr/share/grafana/bin/grafana-server			--	gen_context(system_u:object_r:grafana_exec_t,s0)
