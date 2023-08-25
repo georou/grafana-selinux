@@ -1,6 +1,6 @@
 # grafana-selinux
 
-Grafana selinux policy module for CentOS 7 and RHEL 7.
+Grafana selinux policy module for CentOS 7 and RHEL 7. Recently updated to CentOS Stream 9 - Grafana 10.0.3-1.
 
 At present, from my testing this should be working for all basic functions of Grafana. This hasn't been extensively tested(at present. I will change this when I do) by me and should be considered in an early beta state.
 
@@ -35,7 +35,8 @@ semanage port -a -t grafana_port_t -p tcp 3000
 restorecon -RvF /usr/sbin/grafana-* \
 		/etc/grafana \
 		/var/log/grafana \
-		/var/lib/grafana
+		/var/lib/grafana \
+		/usr/share/grafana/bin
 
 # Start grafana
 systemctl start grafana-server.service
@@ -68,9 +69,9 @@ If you get a could not open interface info [/var/lib/sepolgen/interface_info] er
 Ensure policycoreutils-devel is installed and/or run: `sepolgen-ifgen`
 
 ## Compatibility Notes
-Built on CentOS 7.4 at the time with:
+Built on CentOS Stream 9 at the time with:
 ```
-selinux-policy-targeted-3.13.1-166.el7_4.7.noarch
-selinux-policy-3.13.1-166.el7_4.7.noarch
-selinux-policy-devel-3.13.1-166.el7_4.7.noarch
+selinux-policy-38.1.20-1.el9.noarch
+selinux-policy-targeted-38.1.20-1.el9.noarch
+selinux-policy-devel-38.1.20-1.el9.noarch
 ```
