@@ -85,7 +85,8 @@ manage_files_pattern(grafana_t, grafana_db_t, grafana_db_t)
 
 manage_dirs_pattern(grafana_t, grafana_tmp_t, grafana_tmp_t)
 manage_files_pattern(grafana_t, grafana_tmp_t, grafana_tmp_t)
-files_tmp_filetrans(grafana_t, grafana_tmp_t, { dir file })
+manage_sock_files_pattern(grafana_t, grafana_tmp_t, grafana_tmp_t)
+files_tmp_filetrans(grafana_t, grafana_tmp_t, { dir file sock_file })
 
 manage_dirs_pattern(grafana_t, grafana_tmpfs_t, grafana_tmpfs_t)
 manage_files_pattern(grafana_t, grafana_tmpfs_t, grafana_tmpfs_t)
