@@ -11,7 +11,7 @@
 
 /var/log/grafana(/.*)?						gen_context(system_u:object_r:grafana_log_t,s0)
 
-/var/run/grafana-server.pid				--	gen_context(system_u:object_r:grafana_var_run_t,s0)
+/var/run/grafana(/.*)?						gen_context(system_u:object_r:grafana_var_run_t,s0)
 
 #/var/lib/grafana/plugins(/.*)?					gen_context(system_u:object_r:grafana_plugin_t,s0)
 
