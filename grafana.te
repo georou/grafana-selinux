@@ -123,6 +123,10 @@ logging_send_syslog_msg(grafana_t)
 
 miscfiles_read_generic_certs(grafana_t)
 
+optional_policy(`
+	systemd_private_tmp(grafana_tmp_t)
+')
+
 tunable_policy(`grafana_can_reverse_proxy',`
 	gen_require(`
 		type httpd_t;
