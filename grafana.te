@@ -112,7 +112,7 @@ manage_dirs_pattern(grafana_t, grafana_var_lib_t, grafana_var_lib_t)
 manage_files_pattern(grafana_t, grafana_var_lib_t, grafana_var_lib_t)
 manage_lnk_files_pattern(grafana_t, grafana_var_lib_t, grafana_var_lib_t)
 files_var_lib_filetrans(grafana_t, grafana_var_lib_t, { dir file })
-
+exec_files_pattern(grafana_t, grafana_var_lib_t, grafana_var_lib_t)
 
 corenet_tcp_connect_http_port(grafana_t)
 corenet_tcp_bind_generic_node(grafana_t)
