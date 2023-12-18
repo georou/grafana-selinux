@@ -69,9 +69,13 @@ If you get a could not open interface info [/var/lib/sepolgen/interface_info] er
 Ensure policycoreutils-devel is installed and/or run: `sepolgen-ifgen`
 
 ## Compatibility Notes
-Built on CentOS Stream 9 at the time with:
+Tested with CentOS Stream release 9 running on an AWS EC2 Instance on 2023-12-17:
 ```
-selinux-policy-38.1.20-1.el9.noarch
-selinux-policy-targeted-38.1.20-1.el9.noarch
-selinux-policy-devel-38.1.20-1.el9.noarch
+selinux-policy.noarch 38.1.27-1.el9
+selinux-policy-devel.noarch 38.1.27-1.el9
+selinux-policy-targeted.noarch 38.1.27-1.el9
+
+setools-console.x86_64 4.4.3-1.el9
+
+kernel: Linux 5.14.0-229.el9.x86_64
 ```
