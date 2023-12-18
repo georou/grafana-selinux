@@ -40,6 +40,8 @@ type grafana_exec_t;
 init_daemon_domain(grafana_t, grafana_exec_t)
 init_nnp_daemon_domain(grafana_t)
 
+fstools_getattr_swap_files(grafana_t)
+
 type grafana_unit_file_t;
 systemd_unit_file(grafana_unit_file_t)
 
