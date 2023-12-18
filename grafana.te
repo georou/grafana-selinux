@@ -79,6 +79,7 @@ allow grafana_t self:udp_socket create_stream_socket_perms;
 allow grafana_t self:unix_dgram_socket create_socket_perms;
 
 allow grafana_t grafana_port_t:tcp_socket { name_bind name_connect };
+allow grafana_t influxdb_port_t:tcp_socket name_connect;
 
 manage_dirs_pattern(grafana_t, grafana_conf_t, grafana_conf_t)
 manage_files_pattern(grafana_t, grafana_conf_t, grafana_conf_t)
