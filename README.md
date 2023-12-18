@@ -79,14 +79,3 @@ setools-console.x86_64 4.4.3-1.el9
 
 kernel: Linux 5.14.0-229.el9.x86_64
 ```
-### A Bug
-My box exhibits the following from ausearch - im not sure what needs to be added to fix this at the moment, and I don't use redis currently so this will be on the back burner for the meantime
-```
-$ sudo ausearch -m avc,user_avc,selinux_err -ts recent
-----
-..
-..
-..
-arch=c000003e syscall=59 success=no exit=-13 a0=c000e87e60 a1=c000c76dc0 a2=c000d7afc0 a3=0 items=0 ppid=74260 pid=74267 auid=4294967295 uid=991 gid=991 euid=991 suid=991 fsuid=991 egid=991 sgid=991 fsgid=991 tty=(none) ses=4294967295 comm="grafana-server" exe="/usr/sbin/grafana-server" subj=system_u:system_r:grafana_t:s0 key=(null)
-type=AVC msg=audit(1702877077.493:2565): avc:  denied  { execute } for  pid=74267 comm="grafana-server" name="pcp_redis_datasource_linux_amd64" dev="nvme0n1p2" ino=54562018 scontext=system_u:system_r:grafana_t:s0 tcontext=system_u:object_r:usr_t:s0 tclass=file permissive=0
-```
