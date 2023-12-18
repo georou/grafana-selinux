@@ -51,7 +51,7 @@ sudo restorecon -RvF /usr/sbin/grafana-* \
 		/etc/grafana \
 		/var/log/grafana \
 		/var/lib/grafana \
-		/usr/share/grafana/bin
+		/usr/share/grafana
 
 # Retart grafana - may not acttually be needed
 sudo systemctl restart grafana-server.service
