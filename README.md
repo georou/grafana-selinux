@@ -14,46 +14,50 @@ The policy assumes that you used the rpm from Grafana to install it. Thus all th
 * Add a grafana_plugin_t label to contain plugins.
 
 
-## Installation
+## Prerequisites (Needed before installing)
+Ensure you have the `selinux-policy-devel` package installed.
 ```sh
+# Ensure you have the devel packages
+sudo dnf install git selinux-policy-devel setools-console
+
+# Make sure you're at home for this
+cd ~
+
 # Clone the repo
 git clone https://github.com/georou/grafana-selinux.git
 
+# Change to the directory containing the .if, .fc & .te files
+cd grafana-selinux
+```
+
+## Installation
+```sh
 # Copy relevant .if interface file to /usr/share/selinux/devel/include to expose them when building and for future modules.
 # May need to use full path for grafana.if if not working.
-install -Dp -m 0664 -o root -g root grafana.if /usr/share/selinux/devel/include/myapplications/grafana.if
+sudo install -Dp -m 0664 -o root -g root grafana.if /usr/share/selinux/devel/include/myapplications/grafana.if
 
-# Compile the selinux module (see below)
+# Compile the selinux module
+sudo make -f /usr/share/selinux/devel/Makefile grafana.pp
+sudo semodule -i grafana.pp
 
 # Install the SELinux policy module. Compile it before hand to ensure proper compatibility (see below)
 semodule -i grafana.pp
 
-# Add grafana ports
-semanage port -a -t grafana_port_t -p tcp 3000
+# Add grafana port
+sudo semanage port -a -t grafana_port_t -p tcp 3000
 
 # Restore all the correct context labels
-restorecon -RvF /usr/sbin/grafana-* \
+sudo restorecon -RvF /usr/sbin/grafana-* \
 		/etc/grafana \
 		/var/log/grafana \
 		/var/lib/grafana \
 		/usr/share/grafana/bin
 
-# Start grafana
-systemctl start grafana-server.service
+# Retart grafana - may not acttually be needed
+sudo systemctl restart grafana-server.service
 
-# Ensure it's working in the proper confinement
+# Ensure it's working in the proper confinement - unlear on purpose
 ps -eZ | grep grafana
-```
-
-## How To Compile The Module Locally (Needed before installing)
-Ensure you have the `selinux-policy-devel` package installed.
-```sh
-# Ensure you have the devel packages
-yum install selinux-policy-devel setools-console
-# Change to the directory containing the .if, .fc & .te files
-cd grafana-selinux
-make -f /usr/share/selinux/devel/Makefile grafana.pp
-semodule -i grafana.pp
 ```
 
 ## Debugging and Troubleshooting
