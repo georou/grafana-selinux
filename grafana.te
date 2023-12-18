@@ -40,6 +40,9 @@ type grafana_exec_t;
 init_daemon_domain(grafana_t, grafana_exec_t)
 init_nnp_daemon_domain(grafana_t)
 
+fstools_getattr_swap_files(grafana_t)
+files_exec_usr_files(grafana_t)
+
 type grafana_unit_file_t;
 systemd_unit_file(grafana_unit_file_t)
 
@@ -67,6 +70,9 @@ files_type(grafana_var_lib_t)
 type grafana_port_t;
 corenet_port(grafana_port_t)
 
+type influxdb_port_t;
+corenet_port(influxdb_port_t)
+
 ########################################
 #
 # grafana local policy
@@ -74,8 +80,10 @@ corenet_port(grafana_port_t)
 allow grafana_t self:tcp_socket create_stream_socket_perms;
 allow grafana_t self:udp_socket create_stream_socket_perms;
 allow grafana_t self:unix_dgram_socket create_socket_perms;
+allow grafana_t self:unix_stream_socket connectto;
 
 allow grafana_t grafana_port_t:tcp_socket { name_bind name_connect };
+allow grafana_t influxdb_port_t:tcp_socket name_connect;
 
 manage_dirs_pattern(grafana_t, grafana_conf_t, grafana_conf_t)
 manage_files_pattern(grafana_t, grafana_conf_t, grafana_conf_t)
@@ -104,7 +112,7 @@ manage_dirs_pattern(grafana_t, grafana_var_lib_t, grafana_var_lib_t)
 manage_files_pattern(grafana_t, grafana_var_lib_t, grafana_var_lib_t)
 manage_lnk_files_pattern(grafana_t, grafana_var_lib_t, grafana_var_lib_t)
 files_var_lib_filetrans(grafana_t, grafana_var_lib_t, { dir file })
-
+exec_files_pattern(grafana_t, grafana_var_lib_t, grafana_var_lib_t)
 
 corenet_tcp_connect_http_port(grafana_t)
 corenet_tcp_bind_generic_node(grafana_t)

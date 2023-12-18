@@ -14,46 +14,46 @@ The policy assumes that you used the rpm from Grafana to install it. Thus all th
 * Add a grafana_plugin_t label to contain plugins.
 
 
-## Installation
-```sh
-# Clone the repo
-git clone https://github.com/georou/grafana-selinux.git
-
-# Copy relevant .if interface file to /usr/share/selinux/devel/include to expose them when building and for future modules.
-# May need to use full path for grafana.if if not working.
-install -Dp -m 0664 -o root -g root grafana.if /usr/share/selinux/devel/include/myapplications/grafana.if
-
-# Compile the selinux module (see below)
-
-# Install the SELinux policy module. Compile it before hand to ensure proper compatibility (see below)
-semodule -i grafana.pp
-
-# Add grafana ports
-semanage port -a -t grafana_port_t -p tcp 3000
-
-# Restore all the correct context labels
-restorecon -RvF /usr/sbin/grafana-* \
-		/etc/grafana \
-		/var/log/grafana \
-		/var/lib/grafana \
-		/usr/share/grafana/bin
-
-# Start grafana
-systemctl start grafana-server.service
-
-# Ensure it's working in the proper confinement
-ps -eZ | grep grafana
-```
-
-## How To Compile The Module Locally (Needed before installing)
+## Prerequisites (Needed before installing)
 Ensure you have the `selinux-policy-devel` package installed.
 ```sh
 # Ensure you have the devel packages
-yum install selinux-policy-devel setools-console
-# Change to the directory containing the .if, .fc & .te files
+sudo dnf install git selinux-policy-devel setools-console
+
+# make sure we're at home for this
+cd ~
+
+# clone the repo
+git clone https://github.com/alexwoellhaf/grafana-selinux.git
+
+# cd to the source directory
 cd grafana-selinux
-make -f /usr/share/selinux/devel/Makefile grafana.pp
+```
+
+## Installation
+```sh
+# Copy relevant .if interface file to /usr/share/selinux/devel/include to expose them when building and for future modules.
+# May need to use full path for grafana.if if not working.
+sudo install -Dp -m 0664 -o root -g root grafana.if /usr/share/selinux/devel/include/myapplications/grafana.if
+
+# Compile the selinux module
+sudo make -f /usr/share/selinux/devel/Makefile grafana.pp
+
+# Install the SELinux policy module. Compile it before hand to ensure proper compatibility 
 semodule -i grafana.pp
+
+# Add grafana port
+sudo semanage port -a -t grafana_port_t -p tcp 3000
+
+# Add influxdb port
+sudo semanage port -a -t influxdb_port_t -p tcp 8086
+
+# Restore all the correct context labels
+sudo restorecon -RvF /usr/sbin/grafana-* \
+		/etc/grafana \
+		/var/log/grafana \
+		/var/lib/grafana \
+		/usr/share/grafana
 ```
 
 ## Debugging and Troubleshooting
@@ -69,9 +69,13 @@ If you get a could not open interface info [/var/lib/sepolgen/interface_info] er
 Ensure policycoreutils-devel is installed and/or run: `sepolgen-ifgen`
 
 ## Compatibility Notes
-Built on CentOS Stream 9 at the time with:
+Tested with CentOS Stream release 9 running on an AWS EC2 Instance on 2023-12-17:
 ```
-selinux-policy-38.1.20-1.el9.noarch
-selinux-policy-targeted-38.1.20-1.el9.noarch
-selinux-policy-devel-38.1.20-1.el9.noarch
+selinux-policy.noarch 38.1.27-1.el9
+selinux-policy-devel.noarch 38.1.27-1.el9
+selinux-policy-targeted.noarch 38.1.27-1.el9
+
+setools-console.x86_64 4.4.3-1.el9
+
+kernel: Linux 5.14.0-229.el9.x86_64
 ```
