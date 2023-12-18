@@ -79,6 +79,7 @@ corenet_port(influxdb_port_t)
 allow grafana_t self:tcp_socket create_stream_socket_perms;
 allow grafana_t self:udp_socket create_stream_socket_perms;
 allow grafana_t self:unix_dgram_socket create_socket_perms;
+allow grafana_t self:unix_stream_socket connectto;
 
 allow grafana_t grafana_port_t:tcp_socket { name_bind name_connect };
 allow grafana_t influxdb_port_t:tcp_socket name_connect;
