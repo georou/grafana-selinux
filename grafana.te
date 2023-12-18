@@ -67,6 +67,9 @@ files_type(grafana_var_lib_t)
 type grafana_port_t;
 corenet_port(grafana_port_t)
 
+type influxdb_port_t;
+corenet_port(influxdb_port_t)
+
 ########################################
 #
 # grafana local policy
